@@ -62,8 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Remove a task from localStorage
     function removeFromLocalStorage(taskText) {
         const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        const updatedTasks = tasks.filter(task => task !== taskText);
-        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        // Remove only one matching task so duplicates with the same text survive
+        const index = tasks.indexOf(taskText);
+        if (index !== -1) {
+            tasks.splice(index, 1);
+        }
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
     // Load all tasks from localStorage
